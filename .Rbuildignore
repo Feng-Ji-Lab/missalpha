@@ -1,3 +1,7 @@
 ^missalpha\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^.*\.pdf$
+^.*\.tar\.gz$
+^paper/
+^\.github/

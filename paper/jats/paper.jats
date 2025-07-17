@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.2 20190208//EN"
+                  "JATS-publishing1.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.2" article-type="other">
+<front>
+<journal-meta>
+<journal-id></journal-id>
+<journal-title-group>
+<journal-title>Journal of Open Source Software</journal-title>
+<abbrev-journal-title>JOSS</abbrev-journal-title>
+</journal-title-group>
+<issn publication-format="electronic">2475-9066</issn>
+<publisher>
+<publisher-name>Open Journals</publisher-name>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">0</article-id>
+<article-id pub-id-type="doi">N/A</article-id>
+<title-group>
+<article-title><monospace>missalpha</monospace>: An R package for
+computing bounds of Cronbach’s alpha with missing data</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes">
+<contrib-id contrib-id-type="orcid">https://orcid.org/0000-0002-2051-5453</contrib-id>
+<name>
+<surname>Ji</surname>
+<given-names>Feng</given-names>
+</name>
+<email>f.ji@utoronto.ca</email>
+<xref ref-type="aff" rid="aff-1"/>
+<xref ref-type="corresp" rid="cor-1"><sup>*</sup></xref>
+</contrib>
+<contrib contrib-type="author">
+<contrib-id contrib-id-type="orcid">https://orcid.org/0000-0002-3590-3408</contrib-id>
+<name>
+<surname>Zhou</surname>
+<given-names>Biying</given-names>
+</name>
+<xref ref-type="aff" rid="aff-1"/>
+</contrib>
+<aff id="aff-1">
+<institution-wrap>
+<institution>Department of Applied Psychology &amp; Human Development,
+University of Toronto, Toronto, Canada</institution>
+</institution-wrap>
+</aff>
+</contrib-group>
+<author-notes>
+<corresp id="cor-1">* E-mail: <email>f.ji@utoronto.ca</email></corresp>
+</author-notes>
+<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2025-07-17">
+<day>17</day>
+<month>7</month>
+<year>2025</year>
+</pub-date>
+<volume>¿VOL?</volume>
+<issue>¿ISSUE?</issue>
+<fpage>¿PAGE?</fpage>
+<permissions>
+<copyright-statement>Authors of papers retain copyright and release the
+work under a Creative Commons Attribution 4.0 International License (CC
+BY 4.0)</copyright-statement>
+<copyright-year>2022</copyright-year>
+<copyright-holder>The article authors</copyright-holder>
+<license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+<license-p>Authors of papers retain copyright and release the work under
+a Creative Commons Attribution 4.0 International License (CC BY
+4.0)</license-p>
+</license>
+</permissions>
+<kwd-group kwd-group-type="author">
+<kwd>R</kwd>
+<kwd>Cronbach alpha</kwd>
+<kwd>Manski bound</kwd>
+<kwd>Reliability</kwd>
+</kwd-group>
+</article-meta>
+</front>
+<body>
+<sec id="summary">
+  <title>Summary</title>
+  <p>Cronbach’s alpha is a widely used index of internal consistency and
+  scale reliability in psychological and educational measurement.
+  Despite its popularity, standard implementations often fail to account
+  for missing data appropriately, leading researchers to either use
+  ad-hoc methods or rely on listwise deletion. In practice, this can
+  result in biased reliability estimates.</p>
+  <p>To address this, we developed <monospace>missalpha</monospace>, an
+  R package that estimates the upper and lower bounds of Cronbach’s
+  alpha under arbitrary missingness mechanisms. Our approach is inspired
+  by the concept of <italic>Manski bounds</italic>
+  (<xref alt="Manski, 2003" rid="ref-manski2003partial" ref-type="bibr">Manski,
+  2003</xref>), offering researchers a robust, agnostic summary of
+  reliability when the missing data mechanism is unknown or not easily
+  modeled. <monospace>missalpha</monospace> implements both exact
+  enumeration (for small problems) and optimization-based algorithms
+  (for larger datasets), enabling principled worst-case scenario
+  analysis for reliability.</p>
+</sec>
+<sec id="statement-of-need">
+  <title>Statement of Need</title>
+  <p>In applied research, Cronbach’s alpha is often reported as a point
+  estimate and compared against conventional thresholds (e.g., 0.7 or
+  0.8) to judge scale adequacy
+  (<xref alt="Nunnally, 1978" rid="ref-nunnally1978psychometric" ref-type="bibr">Nunnally,
+  1978</xref>). However, in the presence of missing data, particularly
+  when the missingness mechanism is unclear, standard point estimation
+  may over- or under-estimate the true internal consistency of a
+  scale.</p>
+  <p>Existing packages like <monospace>psych</monospace>
+  (<xref alt="Revelle, 2017" rid="ref-revelle2017psych" ref-type="bibr">Revelle,
+  2017</xref>) and <monospace>ltm</monospace>
+  (<xref alt="Rizopoulos, 2007" rid="ref-rizopoulos2007ltm" ref-type="bibr">Rizopoulos,
+  2007</xref>) compute alpha but assume complete data or impute missing
+  entries without evaluating uncertainty in reliability caused by
+  missingness. To our knowledge, no current package offers a general
+  framework to compute bounds on Cronbach’s alpha that remain valid
+  under arbitrary missing data patterns.</p>
+  <p>The <monospace>missalpha</monospace> package fills this gap by
+  providing tools to: - Compute sharp lower and upper bounds of
+  Cronbach’s alpha under any missing data mechanism; - Perform
+  sensitivity analysis via enumeration, Monte Carlo approximation, and
+  global optimization; - Support both discrete (Likert-type) and
+  continuous response formats.</p>
+  <p>The package is useful when researchers seek to evaluate how missing
+  data may affect conclusions about scale reliability, and when no
+  strong assumptions about the missingness mechanism can be made.</p>
+</sec>
+<sec id="package-features">
+  <title>Package Features</title>
+  <p><monospace>missalpha</monospace> provides the following main
+  functionalities:</p>
+  <list list-type="bullet">
+    <list-item>
+      <p><monospace>cronbachs_alpha()</monospace>: Unified wrapper
+      function for computing alpha bounds via different methods.</p>
+    </list-item>
+    <list-item>
+      <p><monospace>compute_alpha_min()</monospace> /
+      <monospace>compute_alpha_max()</monospace>: Core functions using
+      binary search with optimization (e.g., GA, DEoptim, nloptr) to
+      solve for alpha bounds.</p>
+    </list-item>
+    <list-item>
+      <p><monospace>cronbach_alpha_enum()</monospace>: Exhaustive
+      enumeration of all missing value configurations for exact bound
+      computation.</p>
+    </list-item>
+    <list-item>
+      <p><monospace>cronbach_alpha_rough()</monospace>: Monte Carlo
+      approximation of alpha bounds for large-scale problems.</p>
+    </list-item>
+    <list-item>
+      <p><monospace>display_all()</monospace>: Function to compare and
+      visualize results across all methods.</p>
+    </list-item>
+  </list>
+  <p>Internally, all methods formulate the alpha bound problem as a
+  constrained nonlinear program and apply black-box solvers from
+  <monospace>GA</monospace>
+  (<xref alt="Scrucca, 2013" rid="ref-scrucca2013ga" ref-type="bibr">Scrucca,
+  2013</xref>), <monospace>DEoptim</monospace>
+  (<xref alt="Mullen et al., 2011" rid="ref-mullen2011deoptim" ref-type="bibr">Mullen
+  et al., 2011</xref>), and <monospace>nloptr</monospace>
+  (<xref alt="Ypma et al., 2018" rid="ref-ypma2018package" ref-type="bibr">Ypma
+  et al., 2018</xref>). These solvers identify imputations of missing
+  entries that minimize or maximize the alpha value, thus constructing
+  the global worst-case bounds.</p>
+</sec>
+<sec id="availability">
+  <title>Availability</title>
+  <p>The R package <monospace>missalpha</monospace> is publicly
+  available on
+  <ext-link ext-link-type="uri" xlink:href="https://github.com/Feng-Ji-Lab/missalpha">Github</ext-link>
+  (latest development version):</p>
+  <sec id="github">
+    <title>Github</title>
+    <code language="r script">devtools::install_github(&quot;Feng-Ji-Lab/missalpha&quot;)
+library(missalpha)</code>
+  </sec>
+</sec>
+</body>
+<back>
+<ref-list>
+  <ref id="ref-manski2003partial">
+    <element-citation publication-type="book">
+      <person-group person-group-type="author">
+        <name><surname>Manski</surname><given-names>Charles F</given-names></name>
+      </person-group>
+      <source>Partial identification of probability distributions</source>
+      <publisher-name>Springer</publisher-name>
+      <year iso-8601-date="2003">2003</year>
+    </element-citation>
+  </ref>
+  <ref id="ref-nunnally1978psychometric">
+    <element-citation publication-type="book">
+      <person-group person-group-type="author">
+        <name><surname>Nunnally</surname><given-names>J. C.</given-names></name>
+      </person-group>
+      <source>Psychometric theory</source>
+      <publisher-name>McGraw-Hill</publisher-name>
+      <publisher-loc>New York, NY, USA</publisher-loc>
+      <year iso-8601-date="1978">1978</year>
+      <edition>2nd</edition>
+    </element-citation>
+  </ref>
+  <ref id="ref-revelle2017psych">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Revelle</surname><given-names>William R</given-names></name>
+      </person-group>
+      <article-title>Psych: Procedures for personality and psychological research</article-title>
+      <year iso-8601-date="2017">2017</year>
+    </element-citation>
+  </ref>
+  <ref id="ref-rizopoulos2007ltm">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Rizopoulos</surname><given-names>Dimitris</given-names></name>
+      </person-group>
+      <article-title>Ltm: An r package for latent variable modeling and item response analysis</article-title>
+      <source>Journal of statistical software</source>
+      <year iso-8601-date="2007">2007</year>
+      <volume>17</volume>
+      <fpage>1</fpage>
+      <lpage>25</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-scrucca2013ga">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Scrucca</surname><given-names>Luca</given-names></name>
+      </person-group>
+      <article-title>GA: A package for genetic algorithms in r</article-title>
+      <source>Journal of Statistical Software</source>
+      <year iso-8601-date="2013">2013</year>
+      <volume>53</volume>
+      <fpage>1</fpage>
+      <lpage>37</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-mullen2011deoptim">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Mullen</surname><given-names>Katharine M</given-names></name>
+        <name><surname>Ardia</surname><given-names>David</given-names></name>
+        <name><surname>Gil</surname><given-names>David L</given-names></name>
+        <name><surname>Windover</surname><given-names>Donald</given-names></name>
+        <name><surname>Cline</surname><given-names>James</given-names></name>
+      </person-group>
+      <article-title>DEoptim: An r package for global optimization by differential evolution</article-title>
+      <source>Journal of Statistical Software</source>
+      <year iso-8601-date="2011">2011</year>
+      <volume>40</volume>
+      <fpage>1</fpage>
+      <lpage>26</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-ypma2018package">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Ypma</surname><given-names>Jelmer</given-names></name>
+        <name><surname>Borchers</surname><given-names>Hans W</given-names></name>
+        <name><surname>Eddelbuettel</surname><given-names>Dirk</given-names></name>
+        <name><surname>Ypma</surname><given-names>Maintainer Jelmer</given-names></name>
+      </person-group>
+      <article-title>Package ‘nloptr’</article-title>
+      <source>R package version</source>
+      <year iso-8601-date="2018">2018</year>
+      <volume>1</volume>
+      <issue>1</issue>
+    </element-citation>
+  </ref>
+</ref-list>
+</back>
+</article>
