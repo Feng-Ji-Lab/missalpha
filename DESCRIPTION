@@ -1,0 +1,23 @@
+Type: Package
+Package: missalpha
+Title: Find range of cronbach alpha with a dataset including missing data
+Version: 0.1.0
+Authors@R: c(
+    person("Feng", "Ji", email = "f.ji@utoronto.ca", role = c("cre","aut")),
+    person("Biying", "Zhou", email = "zby.zhou@mail.utoronto.ca", role = "aut"))
+Description: Calculate the maximum and minimum Cronbach's alpha with a dataset with missing data. 
+License: MIT + file LICENSE
+Depends:
+    R (>= 3.1.0),
+Imports:
+    GA,
+    DEoptim,
+    nloptr,
+    stats,
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+LazyData: true
