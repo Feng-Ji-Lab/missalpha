@@ -50,8 +50,8 @@ University of Toronto, Toronto, Canada</institution>
 <author-notes>
 <corresp id="cor-1">* E-mail: <email>f.ji@utoronto.ca</email></corresp>
 </author-notes>
-<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2025-07-17">
-<day>17</day>
+<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2025-07-23">
+<day>23</day>
 <month>7</month>
 <year>2025</year>
 </pub-date>
@@ -168,6 +168,120 @@ a Creative Commons Attribution 4.0 International License (CC BY
   et al., 2018</xref>). These solvers identify imputations of missing
   entries that minimize or maximize the alpha value, thus constructing
   the global worst-case bounds.</p>
+</sec>
+<sec id="examples">
+  <title>Examples</title>
+  <p>To illustrate the usage of <monospace>missalpha</monospace>, we
+  provide several examples demonstrating different methods to compute
+  bounds on Cronbach’s alpha under missing data:</p>
+  <code language="r script">  scores_df &lt;- missalpha::sample
+  scores_mat &lt;- as.matrix(scores_df)
+  result &lt;- cronbachs_alpha(scores_mat, 4, enum_all = FALSE)
+  summary(result)</code>
+  <p>The results are shown below:</p>
+  <preformat>&gt; head(scores_df)
+  V1 V2 V3 V4
+1 NA  1  0  0
+2  0  0  0  0
+3 NA  0  0  0
+4  2  0  0  1
+5 NA  0  0  0
+6  0  0  0  0
+
+&gt;   summary(result)
+Summary of Cronbach's Alpha Bounds Calculation:
+
+Optimization Method: GA
+Alpha Min (Optimized): 0.000488
+Alpha Max (Optimized): 0.403809
+
+Runtime Information:
+Total Runtime: 17.165619 seconds</preformat>
+  <p>In this example, we use a sample dataset
+  (<monospace>missalpha::sample</monospace>) containing 50 individuals
+  and 4 items with missing values. The item scores range from 0 to 4.
+  The optimization-based method
+  (<monospace>cronbachs_alpha()</monospace>) was applied using the
+  default genetic algorithm (GA) with a score maximum of 4.</p>
+  <p>The estimated bounds for Cronbach’s alpha were
+  <monospace>[0.000, 0.404]</monospace>, indicating a wide range of
+  uncertainty in the internal consistency of the scale.</p>
+  <p>The total runtime of approximately 17 seconds reflects the
+  computational cost of performing constrained optimization over all
+  plausible missing value completions.</p>
+  <p>While the first example demonstrates how to compute alpha bounds
+  using a single optimization method on a small-scale dataset,
+  researchers may often be interested in comparing the behavior of
+  different estimation strategies. The next example showcases how
+  <monospace>missalpha</monospace> supports such comparisons through the
+  <monospace>display_all()</monospace> function, which runs multiple
+  methods—including rough approximation and different optimization
+  solvers—on the same input matrix. This allows users to evaluate the
+  trade-offs between computational efficiency and estimation
+  precision.</p>
+  <code language="r script">  all_result = display_all(scores_mat = scores_mat,score_max = 2)
+  summary(all_result)</code>
+  <p>The results are shown below:</p>
+  <preformat>&gt;   summary(all_result)
+Rough_Integer_Method:
+Alpha Min: 0.201523
+Alpha Max: 0.392180
+Runtime: 0.084263 seconds
+
+Rough_Float_Method:
+Alpha Min: 0.217747
+Alpha Max: 0.392180
+Runtime: 0.086584 seconds
+
+Optimization_Method_GA:
+Alpha Min: 0.194824
+Alpha Max: 0.404785
+Runtime: 16.930677 seconds
+
+Optimization_Method_DEoptim:
+Alpha Min: 0.192871
+Alpha Max: 0.404785
+Runtime: 1.099646 seconds
+
+Optimization_Method_nloptr:
+Alpha Min: 0.191895
+Alpha Max: 0.404785
+Runtime: 0.029727 seconds</preformat>
+  <p>This example demonstrates how <monospace>display_all()</monospace>
+  can be used to compare multiple estimation strategies for Cronbach’s
+  alpha bounds on the same dataset. Using a response matrix with scores
+  ranging from 0 to 2, we evaluated five methods:</p>
+  <list list-type="bullet">
+    <list-item>
+      <p><bold>Rough Integer Sampling</bold>: fast, coarse approximation
+      using integer imputations; result: [0.202, 0.392].</p>
+    </list-item>
+    <list-item>
+      <p><bold>Rough Float Sampling</bold>: uses continuous sampling
+      over [0, 2]; result: [0.218, 0.392].</p>
+    </list-item>
+    <list-item>
+      <p><bold>Optimization (GA)</bold>: more accurate but slowest;
+      result: [0.195, 0.405], runtime ~17 seconds.</p>
+    </list-item>
+    <list-item>
+      <p><bold>Optimization (DEoptim)</bold>: faster than GA, similar
+      result; runtime ~1.1 seconds.</p>
+    </list-item>
+    <list-item>
+      <p><bold>Optimization (nloptr)</bold>: fastest among optimization
+      solvers; result: [0.192, 0.405], runtime &lt; 0.03 seconds.</p>
+    </list-item>
+  </list>
+  <p>All methods produced similar upper bounds (~0.405), while lower
+  bounds varied slightly depending on method and optimization strategy.
+  Notably, the three optimization methods—GA, DEoptim, and nloptr—all
+  produced nearly identical alpha bounds, with lower bounds ranging from
+  0.192 to 0.195 and a shared upper bound of 0.405. This consistency
+  across solvers highlights the robustness and stability of the
+  underlying optimization formulation in
+  <monospace>missalpha</monospace>, ensuring that results do not depend
+  heavily on the specific numerical algorithm chosen.</p>
 </sec>
 <sec id="availability">
   <title>Availability</title>
