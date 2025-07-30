@@ -36,6 +36,7 @@ In applied research, Cronbach's alpha is often reported as a point estimate and 
 Existing packages like `psych` [@revelle2017psych] and `ltm` [@rizopoulos2007ltm] compute alpha but assume complete data or impute missing entries without evaluating uncertainty in reliability caused by missingness. To our knowledge, no current package offers a general framework to compute bounds on Cronbach's alpha that remain valid under arbitrary missing data patterns.
 
 The `missalpha` package fills this gap by providing tools to:
+
 - Compute sharp lower and upper bounds of Cronbach's alpha under any missing data mechanism;  
 - Perform sensitivity analysis via enumeration, Monte Carlo approximation, and global optimization;  
 - Support both discrete (Likert-type) and continuous response formats.  

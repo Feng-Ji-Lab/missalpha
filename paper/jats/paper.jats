@@ -119,12 +119,23 @@ a Creative Commons Attribution 4.0 International License (CC BY
   framework to compute bounds on Cronbach’s alpha that remain valid
   under arbitrary missing data patterns.</p>
   <p>The <monospace>missalpha</monospace> package fills this gap by
-  providing tools to: - Compute sharp lower and upper bounds of
-  Cronbach’s alpha under any missing data mechanism;
-  - Perform sensitivity analysis via enumeration, Monte Carlo
-  approximation, and global optimization;
-  - Support both discrete (Likert-type) and continuous response
-  formats.</p>
+  providing tools to:</p>
+  <list list-type="bullet">
+    <list-item>
+      <p>Compute sharp lower and upper bounds of Cronbach’s alpha under
+      any missing data mechanism;
+      </p>
+    </list-item>
+    <list-item>
+      <p>Perform sensitivity analysis via enumeration, Monte Carlo
+      approximation, and global optimization;
+      </p>
+    </list-item>
+    <list-item>
+      <p>Support both discrete (Likert-type) and continuous response
+      formats.</p>
+    </list-item>
+  </list>
   <p>The package is useful when researchers seek to evaluate how missing
   data may affect conclusions about scale reliability, and when no
   strong assumptions about the missingness mechanism can be made.</p>
