@@ -50,8 +50,8 @@ University of Toronto, Toronto, Canada</institution>
 <author-notes>
 <corresp id="cor-1">* E-mail: <email>f.ji@utoronto.ca</email></corresp>
 </author-notes>
-<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2025-07-23">
-<day>23</day>
+<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2025-07-30">
+<day>30</day>
 <month>7</month>
 <year>2025</year>
 </pub-date>
@@ -120,10 +120,11 @@ a Creative Commons Attribution 4.0 International License (CC BY
   under arbitrary missing data patterns.</p>
   <p>The <monospace>missalpha</monospace> package fills this gap by
   providing tools to: - Compute sharp lower and upper bounds of
-  Cronbach’s alpha under any missing data mechanism; - Perform
-  sensitivity analysis via enumeration, Monte Carlo approximation, and
-  global optimization; - Support both discrete (Likert-type) and
-  continuous response formats.</p>
+  Cronbach’s alpha under any missing data mechanism;
+  - Perform sensitivity analysis via enumeration, Monte Carlo
+  approximation, and global optimization;
+  - Support both discrete (Likert-type) and continuous response
+  formats.</p>
   <p>The package is useful when researchers seek to evaluate how missing
   data may affect conclusions about scale reliability, and when no
   strong assumptions about the missingness mechanism can be made.</p>
@@ -209,6 +210,43 @@ Total Runtime: 17.165619 seconds</preformat>
   <p>The total runtime of approximately 17 seconds reflects the
   computational cost of performing constrained optimization over all
   plausible missing value completions.</p>
+  <p>To further demonstrate the types of datasets that
+  <monospace>missalpha</monospace> can handle, we generate a synthetic
+  matrix with missing values using a Bernoulli process. This simulates a
+  common testing scenario where some item responses are randomly missing
+  across individuals. The matrix contains responses (0/1/2), and 20
+  entries out of the 500 entries are randomly set to missing (NA).</p>
+  <code language="r script">set.seed(0)
+score_max &lt;- 2
+scores_mat_bernoulli &lt;- generate_scores_mat_bernoulli(
+  n_person = 50,
+  n_item = 10,
+  n_missing = 20,
+  score_max = score_max
+)
+
+result = cronbachs_alpha(
+    scores_mat_bernoulli, score_max, enum_all = FALSE
+)
+summary(result)</code>
+  <p>We can plot a missing map to show the generated dataset:</p>
+  <fig>
+    <caption><p>Missing data
+    map.<styled-content id="missing_map"></styled-content></p></caption>
+    <graphic mimetype="image" mime-subtype="png" xlink:href="missing_data_map.png" />
+  </fig>
+  <p>The visualization above provides a clear overview of random entries
+  are missing.</p>
+  <p>The result is shown as:</p>
+  <preformat>&gt; summary(result)
+Summary of Cronbach's Alpha Bounds Calculation: 
+
+Optimization Method: GA
+Alpha Min (Optimized): 0.762207
+Alpha Max (Optimized): 0.817871
+
+Runtime Information:
+Total Runtime: 19.001663 seconds</preformat>
   <p>While the first example demonstrates how to compute alpha bounds
   using a single optimization method on a small-scale dataset,
   researchers may often be interested in comparing the behavior of

@@ -36,9 +36,9 @@ In applied research, Cronbach's alpha is often reported as a point estimate and 
 Existing packages like `psych` [@revelle2017psych] and `ltm` [@rizopoulos2007ltm] compute alpha but assume complete data or impute missing entries without evaluating uncertainty in reliability caused by missingness. To our knowledge, no current package offers a general framework to compute bounds on Cronbach's alpha that remain valid under arbitrary missing data patterns.
 
 The `missalpha` package fills this gap by providing tools to:
-- Compute sharp lower and upper bounds of Cronbach's alpha under any missing data mechanism;
-- Perform sensitivity analysis via enumeration, Monte Carlo approximation, and global optimization;
-- Support both discrete (Likert-type) and continuous response formats.
+- Compute sharp lower and upper bounds of Cronbach's alpha under any missing data mechanism;  
+- Perform sensitivity analysis via enumeration, Monte Carlo approximation, and global optimization;  
+- Support both discrete (Likert-type) and continuous response formats.  
 
 The package is useful when researchers seek to evaluate how missing data may affect conclusions about scale reliability, and when no strong assumptions about the missingness mechanism can be made.
 
@@ -94,6 +94,44 @@ In this example, we use a sample dataset (`missalpha::sample`) containing 50 ind
 The estimated bounds for Cronbach’s alpha were `[0.000, 0.404]`, indicating a wide range of uncertainty in the internal consistency of the scale.
 
 The total runtime of approximately 17 seconds reflects the computational cost of performing constrained optimization over all plausible missing value completions.
+
+To further demonstrate the types of datasets that `missalpha` can handle, we generate a synthetic matrix with missing values using a Bernoulli process. This simulates a common testing scenario where some item responses are randomly missing across individuals. The matrix contains responses (0/1/2), and 20 entries out of the 500 entries are randomly set to missing (NA).
+
+``` r
+set.seed(0)
+score_max <- 2
+scores_mat_bernoulli <- generate_scores_mat_bernoulli(
+  n_person = 50,
+  n_item = 10,
+  n_missing = 20,
+  score_max = score_max
+)
+
+result = cronbachs_alpha(
+    scores_mat_bernoulli, score_max, enum_all = FALSE
+)
+summary(result)
+```
+
+We can plot a missing map to show the generated dataset:
+
+![Missing data map.\label{missing_map}](missing_data_map.png)
+
+The visualization above provides a clear overview of random entries are missing.
+
+The result is shown as:
+
+```
+> summary(result)
+Summary of Cronbach's Alpha Bounds Calculation: 
+
+Optimization Method: GA
+Alpha Min (Optimized): 0.762207
+Alpha Max (Optimized): 0.817871
+
+Runtime Information:
+Total Runtime: 19.001663 seconds
+```
 
 While the first example demonstrates how to compute alpha bounds using a single optimization method on a small-scale dataset, researchers may often be interested in comparing the behavior of different estimation strategies. The next example showcases how `missalpha` supports such comparisons through the `display_all()` function, which runs multiple methods—including rough approximation and different optimization solvers—on the same input matrix. This allows users to evaluate the trade-offs between computational efficiency and estimation precision.
 
