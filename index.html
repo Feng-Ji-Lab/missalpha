@@ -55,7 +55,132 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-Calculate the maximum and minimum Cronbach's alpha with a dataset with missing data.
+
+<div class="section level1">
+<div class="page-header"><h1 id="missalpha">missalpha<a class="anchor" aria-label="anchor" href="#missalpha"></a>
+</h1></div>
+<p>Calculate the maximum and minimum Cronbach’s alpha with a dataset with missing data.</p>
+</div>
+<div class="section level1">
+<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1>
+<p>The R package <code>missalpha</code> is publicly available on <a href="https://github.com/Feng-Ji-Lab/missalpha" class="external-link">Github</a> (latest development version):</p>
+<div class="section level2">
+<h2 id="github">Github<a class="anchor" aria-label="anchor" href="#github"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Feng-Ji-Lab/missalpha"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">missalpha</span><span class="op">)</span></span></code></pre></div>
+<p>The CRAN version is incoming soon.</p>
+</div>
+</div>
+<div class="section level1">
+<h1 id="functionality">Functionality<a class="anchor" aria-label="anchor" href="#functionality"></a>
+</h1>
+<p><code>missalpha</code> provides the following main functionalities:</p>
+<ul>
+<li>
+<code><a href="reference/cronbachs_alpha.html">cronbachs_alpha()</a></code>: Unified wrapper function for computing alpha bounds via different methods.</li>
+<li>
+<code><a href="reference/compute_alpha_min.html">compute_alpha_min()</a></code> / <code><a href="reference/compute_alpha_max.html">compute_alpha_max()</a></code>: Core functions using binary search with optimization (e.g., GA, DEoptim, nloptr) to solve for alpha bounds.</li>
+<li>
+<code><a href="reference/cronbach_alpha_enum.html">cronbach_alpha_enum()</a></code>: Exhaustive enumeration of all missing value configurations for exact bound computation.</li>
+<li>
+<code><a href="reference/cronbach_alpha_rough.html">cronbach_alpha_rough()</a></code>: Monte Carlo approximation of alpha bounds for large-scale problems.</li>
+<li>
+<code><a href="reference/display_all.html">display_all()</a></code>: Function to compare and visualize results across all methods.</li>
+</ul>
+<p>Internally, all methods formulate the alpha bound problem as a constrained nonlinear program and apply black-box solvers from <code>GA</code>, <code>DEoptim</code>, and <code>nloptr</code>. These solvers identify imputations of missing entries that minimize or maximize the alpha value, thus constructing the global worst-case bounds.</p>
+</div>
+<div class="section level1">
+<h1 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+</h1>
+<p>To illustrate the usage of <code>missalpha</code>, we provide several examples demonstrating different methods to compute bounds on Cronbach’s alpha under missing data:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span>  <span class="va">scores_df</span> <span class="op">&lt;-</span> <span class="fu">missalpha</span><span class="fu">::</span><span class="va"><a href="reference/sample.html">sample</a></span></span>
+<span>  <span class="va">scores_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">scores_df</span><span class="op">)</span></span>
+<span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cronbachs_alpha.html">cronbachs_alpha</a></span><span class="op">(</span><span class="va">scores_mat</span>, <span class="fl">4</span>, enum_all <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
+<p>The results are shown below:</p>
+<pre><code>&gt; head(scores_df)
+  V1 V2 V3 V4
+1 NA  1  0  0
+2  0  0  0  0
+3 NA  0  0  0
+4  2  0  0  1
+5 NA  0  0  0
+6  0  0  0  0
+
+&gt;   summary(result)
+Summary of Cronbach's Alpha Bounds Calculation:
+
+Optimization Method: GA
+Alpha Min (Optimized): 0.000488
+Alpha Max (Optimized): 0.403809
+
+Runtime Information:
+Total Runtime: 17.165619 seconds</code></pre>
+<p>In this example, we use a sample dataset (<code><a href="reference/sample.html">missalpha::sample</a></code>) containing 50 individuals and 4 items with missing values. The item scores range from 0 to 4. The optimization-based method (<code><a href="reference/cronbachs_alpha.html">cronbachs_alpha()</a></code>) was applied using the default genetic algorithm (GA) with a score maximum of 4.</p>
+<p>The estimated bounds for Cronbach’s alpha were <code>[0.000, 0.404]</code>, indicating a wide range of uncertainty in the internal consistency of the scale.</p>
+<p>The total runtime of approximately 17 seconds reflects the computational cost of performing constrained optimization over all plausible missing value completions.</p>
+<p>To further demonstrate the types of datasets that <code>missalpha</code> can handle, we generate a synthetic matrix with missing values using a Bernoulli process. This simulates a common testing scenario where some item responses are randomly missing across individuals. The matrix contains responses (0/1/2), and 20 entries out of the 500 entries are randomly set to missing (NA).</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">score_max</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
+<span><span class="va">scores_mat_bernoulli</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/generate_scores_mat_bernoulli.html">generate_scores_mat_bernoulli</a></span><span class="op">(</span></span>
+<span>  n_person <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  n_item <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  n_missing <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  score_max <span class="op">=</span> <span class="va">score_max</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="reference/cronbachs_alpha.html">cronbachs_alpha</a></span><span class="op">(</span></span>
+<span>    <span class="va">scores_mat_bernoulli</span>, <span class="va">score_max</span>, enum_all <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
+<p>The result is shown as:</p>
+<pre><code>&gt; summary(result)
+Summary of Cronbach's Alpha Bounds Calculation:
+
+Optimization Method: GA
+Alpha Min (Optimized): 0.762207
+Alpha Max (Optimized): 0.817871
+
+Runtime Information:
+Total Runtime: 19.001663 seconds</code></pre>
+<p>We also provide a function that calculates all estimates and display them:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span>  <span class="va">all_result</span> <span class="op">=</span> <span class="fu"><a href="reference/display_all.html">display_all</a></span><span class="op">(</span>scores_mat <span class="op">=</span> <span class="va">scores_mat</span>,score_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">all_result</span><span class="op">)</span></span></code></pre></div>
+<p>The results are shown below:</p>
+<pre><code>&gt;   summary(all_result)
+Rough_Integer_Method:
+Alpha Min: 0.201523
+Alpha Max: 0.392180
+Runtime: 0.084263 seconds
+
+Rough_Float_Method:
+Alpha Min: 0.217747
+Alpha Max: 0.392180
+Runtime: 0.086584 seconds
+
+Optimization_Method_GA:
+Alpha Min: 0.194824
+Alpha Max: 0.404785
+Runtime: 16.930677 seconds
+
+Optimization_Method_DEoptim:
+Alpha Min: 0.192871
+Alpha Max: 0.404785
+Runtime: 1.099646 seconds
+
+Optimization_Method_nloptr:
+Alpha Min: 0.191895
+Alpha Max: 0.404785
+Runtime: 0.029727 seconds</code></pre>
+<p>For more information, please refer to <a href="missalpha_0.1.0.pdf">our manual</a>.</p>
+</div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
