@@ -1,6 +1,6 @@
 # missalpha
 
-Calculate the maximum and minimum Cronbach's alpha with a dataset with missing data. 
+missalpha: An R package for computing upper and lower bounds of Cronbach’s alpha in the presence of missing data
 
 # Installation
 
