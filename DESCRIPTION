@@ -5,6 +5,7 @@ Version: 0.1.0
 Authors@R: c(
     person("Feng", "Ji", email = "f.ji@utoronto.ca", role = c("cre","aut")),
     person("Biying", "Zhou", email = "zby.zhou@mail.utoronto.ca", role = "aut"))
+Maintainer: Biying Zhou <zby.zhou@mail.utoronto.ca>
 Description: Calculate the maximum and minimum Cronbach's alpha with a dataset with missing data. 
 License: MIT + file LICENSE
 Depends:
