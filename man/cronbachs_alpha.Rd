@@ -57,6 +57,7 @@ optimization algorithms. The function also supports rough approximations
 and allows integer-only or floating-point scores during sampling.
 }
 \examples{
+\dontrun{
 # Example 1: Run `cronbachs_alpha` with a sample matrix
 scores_mat <- matrix(c(
   NaN, 1, 0, 0, 0, 0, 0, 0, NaN, 0, 0, 0,
@@ -81,6 +82,7 @@ scores_mat <- as.matrix(scores_df)
 result <- cronbachs_alpha(scores_mat, score_max = 4, enum_all = FALSE)
 print(result$alpha_min_opt)
 print(result$alpha_max_opt)
+}
 
 }
 \seealso{

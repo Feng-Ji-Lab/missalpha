@@ -30,6 +30,7 @@
 #' @seealso \code{\link{compute_alpha_min}}, \code{\link{compute_alpha_max}}, \code{\link{cronbach_alpha_enum}}, \code{\link{cronbach_alpha_rough}}, \code{\link{generate_scores_mat_bernoulli}}, \code{\link{qp_solver}}
 #'
 #' @examples
+#' \dontrun{
 #' # Example 1: Run `cronbachs_alpha` with a sample matrix
 #' scores_mat <- matrix(c(
 #'   NaN, 1, 0, 0, 0, 0, 0, 0, NaN, 0, 0, 0,
@@ -54,7 +55,8 @@
 #' result <- cronbachs_alpha(scores_mat, score_max = 4, enum_all = FALSE)
 #' print(result$alpha_min_opt)
 #' print(result$alpha_max_opt)
-#'
+#' }
+#' 
 #' @export
 cronbachs_alpha <- function(
     scores_mat,

@@ -6,3 +6,4 @@
 ^paper/
 ^\.github/
 ^.*\.pdf$
+^README\.md$
