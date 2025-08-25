@@ -1,11 +1,11 @@
 Type: Package
 Package: missalpha
-Title: Find range of cronbach alpha with a dataset including missing data
+Title: Find Range of Cronbach Alpha with a Dataset Including Missing Data
 Version: 0.1.0
 Authors@R: c(
-    person("Feng", "Ji", email = "f.ji@utoronto.ca", role = c("cre","aut")),
-    person("Biying", "Zhou", email = "zby.zhou@mail.utoronto.ca", role = "aut"))
-Maintainer: Biying Zhou <zby.zhou@mail.utoronto.ca>
+    person("Feng", "Ji", email = "f.ji@utoronto.ca", role = c("aut")),
+    person("Biying", "Zhou", email = "biying.zhou@psu.edu", role = c("aut","cre")))
+Maintainer: Biying Zhou <biying.zhou@psu.edu>
 Description: Calculate the maximum and minimum Cronbach's alpha with a dataset with missing data. 
 License: MIT + file LICENSE
 Depends:
