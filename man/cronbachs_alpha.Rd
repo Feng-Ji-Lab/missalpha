@@ -57,7 +57,7 @@ optimization algorithms. The function also supports rough approximations
 and allows integer-only or floating-point scores during sampling.
 }
 \examples{
-\dontrun{
+\donttest{
 # Example 1: Run `cronbachs_alpha` with a sample matrix
 scores_mat <- matrix(c(
   NaN, 1, 0, 0, 0, 0, 0, 0, NaN, 0, 0, 0,

@@ -30,7 +30,7 @@
 #' @seealso \code{\link{compute_alpha_min}}, \code{\link{compute_alpha_max}}, \code{\link{cronbach_alpha_enum}}, \code{\link{cronbach_alpha_rough}}, \code{\link{generate_scores_mat_bernoulli}}, \code{\link{qp_solver}}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Example 1: Run `cronbachs_alpha` with a sample matrix
 #' scores_mat <- matrix(c(
 #'   NaN, 1, 0, 0, 0, 0, 0, 0, NaN, 0, 0, 0,
