@@ -135,4 +135,4 @@ Alpha Max: 0.404785
 Runtime: 0.029727 seconds
 ```
 
-For more information, please refer to [our manual](missalpha_0.1.0.pdf).
+For more information, please refer to [our manual](missalpha_0.2.0.pdf).

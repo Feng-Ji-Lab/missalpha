@@ -5,7 +5,7 @@
 #' The function supports different optimization methods and iteratively attempts to solve the problem.
 #'
 #' @param alpha A numeric value representing the \code{alpha} value to check.
-#' @param n_person An integer representing the number of individuals or rows in the data.
+#' @param n_item An integer representing the number of items or columns in the data.
 #' @param sigma_x_info A list containing the quadratic function information for sigma_x, including:
 #' \itemize{
 #'   \item A matrix representing the quadratic coefficients for sigma_x.
@@ -48,7 +48,7 @@
 
 examine_alpha_bound <- function(
     alpha,        # Numeric: The value of alpha we want to check
-    n_person,     # Integer: The number of all people
+    n_item,     # Integer: The number of all items
     sigma_x_info, # List: The info in quadratic function of sigma_x (A_mat_x, b_array_x, c_scaler_x)
     sigma_y_info, # List: The info in quadratic function of sigma_y (A_mat_y, b_array_y, c_scaler_y)
     alpha_type,   # Character: 'min' or 'max' indicating the problem type
@@ -61,10 +61,10 @@ examine_alpha_bound <- function(
 
   if (alpha_type == 'min') {
     const_x <- -1.0
-    const_y <- 1.0 - alpha * (n_person - 1.0) / n_person
+    const_y <- 1.0 - alpha * (n_item - 1.0) / n_item
   } else if (alpha_type == 'max') {
     const_x <- 1.0
-    const_y <- -1.0 + alpha * (n_person - 1.0) / n_person
+    const_y <- -1.0 + alpha * (n_item - 1.0) / n_item
   } else {
     stop('alpha_type can only be "min" or "max"')
   }

@@ -1,7 +1,7 @@
 Type: Package
 Package: missalpha
 Title: Find Range of Cronbach Alpha with a Dataset Including Missing Data
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Feng", "Ji", email = "f.ji@utoronto.ca", role = c("aut")),
     person("Biying", "Zhou", email = "biying.zhou@psu.edu", role = c("aut","cre")))
@@ -30,7 +30,7 @@ Imports:
     stats,
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

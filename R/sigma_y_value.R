@@ -12,7 +12,7 @@ sigma_y_value <- function(scores_mat, unknown_info, unknown_value) {
 
   for (num_iter in 1:unknown_count) {
     loc <- unknown_list_to_mat[[num_iter]]
-    scores_tmp[loc[1] + 1, 1] <- unknown_value[num_iter]
+    scores_tmp[loc[1] + 1, loc[2] + 1] <- unknown_value[num_iter]
   }
 
   n_person <- nrow(scores_tmp)

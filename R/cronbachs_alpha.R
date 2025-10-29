@@ -160,7 +160,7 @@ cronbachs_alpha <- function(
 
   # Optimization to compute alpha_min and alpha_max
   alpha_min_opt <- compute_alpha_min(
-    nrow(scores_mat),
+    ncol(scores_mat),
     sigma_x_info,
     sigma_y_info,
     score_max = score_max,
@@ -169,7 +169,7 @@ cronbachs_alpha <- function(
     ...
   )
   alpha_max_opt <- compute_alpha_max(
-    nrow(scores_mat),
+    ncol(scores_mat),
     sigma_x_info,
     sigma_y_info,
     score_max = score_max,

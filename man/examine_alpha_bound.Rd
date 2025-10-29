@@ -6,7 +6,7 @@
 \usage{
 examine_alpha_bound(
   alpha,
-  n_person,
+  n_item,
   sigma_x_info,
   sigma_y_info,
   alpha_type,
@@ -19,7 +19,7 @@ examine_alpha_bound(
 \arguments{
 \item{alpha}{A numeric value representing the \code{alpha} value to check.}
 
-\item{n_person}{An integer representing the number of individuals or rows in the data.}
+\item{n_item}{An integer representing the number of items or columns in the data.}
 
 \item{sigma_x_info}{A list containing the quadratic function information for sigma_x, including:
 \itemize{

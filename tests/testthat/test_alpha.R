@@ -96,6 +96,7 @@ test_that("test_alpha", {
   # Input Data
   alpha <- 0.5
   n_person <- 50
+  n_item = 10
 
   # sigma_x_info
   A_mat_x <- matrix(c(
@@ -156,7 +157,7 @@ test_that("test_alpha", {
   # Run the examine_alpha_bound function
   result <- examine_alpha_bound(
     alpha = alpha,
-    n_person = n_person,
+    n_item = n_item,
     sigma_x_info = sigma_x_info,
     sigma_y_info = sigma_y_info,
     alpha_type = alpha_type,
@@ -169,6 +170,7 @@ test_that("test_alpha", {
 
   # Define the parameters
   n_person <- 50
+  n_item = 10
 
   sigma_x_info <- list(
     matrix(c(
@@ -231,7 +233,7 @@ test_that("test_alpha", {
   num_try <- 1
 
   result <- compute_alpha_min(
-    n_person,
+    n_item,
     sigma_x_info,
     sigma_y_info,
     score_max = score_max,
@@ -243,7 +245,7 @@ test_that("test_alpha", {
 
 
   result <- compute_alpha_max(
-    n_person,
+    n_item,
     sigma_x_info,
     sigma_y_info,
     score_max = score_max,

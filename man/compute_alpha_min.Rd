@@ -5,7 +5,7 @@
 \title{Compute Minimum Possible Alpha Value}
 \usage{
 compute_alpha_min(
-  n_person,
+  n_item,
   sigma_x_info,
   sigma_y_info,
   score_max = 1,
@@ -18,7 +18,7 @@ compute_alpha_min(
 )
 }
 \arguments{
-\item{n_person}{An integer specifying the number of individuals (rows) in the score matrix.}
+\item{n_item}{An integer specifying the number of items (columns) in the score matrix.}
 
 \item{sigma_x_info}{A list containing the quadratic function information for sigma_x. It should include:
 \itemize{

@@ -4,7 +4,7 @@
 #' a binary search algorithm with optimization methods. The function iteratively narrows
 #' the bounds of alpha until the desired tolerance level is reached.
 #'
-#' @param n_person An integer specifying the number of individuals (rows) in the score matrix.
+#' @param n_item An integer specifying the number of items (columns) in the score matrix.
 #' @param sigma_x_info A list containing the quadratic function information for sigma_x. It should include:
 #' \itemize{
 #'   \item A matrix representing the quadratic coefficients for sigma_x.
@@ -38,7 +38,7 @@
 
 
 compute_alpha_min <- function(
-    n_person,        # integer
+    n_item,        # integer
     sigma_x_info,    # list containing matrix, vector, and float
     sigma_y_info,    # list containing matrix, vector, and float
     score_max = 1,   # integer
@@ -71,7 +71,7 @@ compute_alpha_min <- function(
     alpha_mid <- (ub + lb) / 2
     result_list <- examine_alpha_bound(
       alpha_mid,
-      n_person,
+      n_item,
       sigma_x_info,
       sigma_y_info,
       'min',
